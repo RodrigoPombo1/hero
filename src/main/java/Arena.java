@@ -68,7 +68,7 @@ public class Arena {
     private boolean canHeroMove(Position position) {
         boolean not_blocked_by_walls = true;
         for (Wall wall : walls) {
-            if (position.getX() == wall.getPosition().getX() && position.getY() == wall.getPosition().getY()) {
+            if (wall.getPosition().equals(position)) {
                 not_blocked_by_walls = false;
                 break;
             }

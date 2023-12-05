@@ -13,6 +13,7 @@ public class Wall {
     public Position getPosition() {
         return this.position;
     }
+
     Wall(int x, int y) {
         this.position = new Position(x, y);
     }
