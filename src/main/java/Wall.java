@@ -3,12 +3,7 @@ import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 
-public class Wall {
-    private Position position;
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
+public class Wall extends Element {
 
     public Position getPosition() {
         return this.position;

@@ -5,13 +5,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 
-public class Hero {
-
-    private Position position;
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
+public class Hero extends Element {
 
     Hero(int x, int y) {
         this.position = new Position(x, y);
