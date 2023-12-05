@@ -1,9 +1,14 @@
+import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
 public class Arena {
     private int width;
     private int height;
+
 
     Hero hero = new Hero(10, 10);
 
@@ -29,7 +34,9 @@ public class Arena {
         }
     }
 
-    public void draw(Screen screen) {
+    public void draw(TextGraphics screen) {
+        screen.setBackgroundColor(TextColor.Factory.fromString("#336699"));
+        screen.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
         hero.draw(screen);
     }
 
