@@ -7,6 +7,7 @@ import com.googlecode.lanterna.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Arena {
     private int width;
@@ -17,10 +18,13 @@ public class Arena {
 
     private List<Wall> walls;
 
+    private List<Coin> coins;
+
     Arena(int width, int height) {
         this.width = width;
         this.height = height;
         this.walls = createWalls();
+        this.coins = createCoins();
     }
 
     private List<Wall> createWalls() {
@@ -35,6 +39,15 @@ public class Arena {
         }
         return walls;
     }
+
+    private List<Coin> createCoins() {
+        Random random = new Random();
+        ArrayList<Coin> coins = new ArrayList<>();
+        for (int i = 0; i < 5; i++)
+            coins.add(new Coin(random.nextInt(width - 2) + 1, random.nextInt(height - 2) + 1));
+        return coins;
+    }
+
     public void processKey(KeyStroke key) {
         switch (key.getKeyType()) {
             case ArrowUp:
@@ -58,11 +71,24 @@ public class Arena {
         hero.draw(screen);
         for (Wall wall : walls)
             wall.draw(screen);
+        retrieveCoins(hero.getPosition());
+        for (Coin coin : coins)
+            coin.draw(screen);
     }
 
     public void moveHero(Position position) {
         if (canHeroMove(position))
             hero.setPosition(position);
+    }
+
+    private void retrieveCoins(Position position) {
+        for (Coin coin : coins) {
+            if (coin.getPosition().equals(position)) {
+                coins.remove(coin);
+                System.out.println("gay");
+                break;
+            }
+        }
     }
 
     private boolean canHeroMove(Position position) {

@@ -8,6 +8,10 @@ public abstract class Element {
         this.position = position;
     }
 
+    public Position getPosition() {
+        return this.position;
+    }
+
     public abstract void draw(TextGraphics screen);
 
 }
