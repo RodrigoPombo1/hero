@@ -29,15 +29,20 @@ public class Game {
         arena.processKey(key);
     }
 
-    private void draw() throws IOException {
+    private boolean draw() throws IOException {
         screen.clear();
-        arena.draw(screen.newTextGraphics());
+        boolean res = arena.draw(screen.newTextGraphics());
         screen.refresh();
+        return res;
     }
 
     public void run() throws IOException {
         while (true) {
-            draw();
+            boolean res = draw();
+            if (res) {
+                screen.close();
+                break;
+            }
             KeyStroke key = screen.readInput();
             if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
                 screen.close();

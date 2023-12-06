@@ -20,11 +20,14 @@ public class Arena {
 
     private List<Coin> coins;
 
+    private List<Monster> monsters;
+
     Arena(int width, int height) {
         this.width = width;
         this.height = height;
         this.walls = createWalls();
         this.coins = createCoins();
+        this.monsters = createMonsters();
     }
 
     private List<Wall> createWalls() {
@@ -48,6 +51,14 @@ public class Arena {
         return coins;
     }
 
+    private List<Monster> createMonsters() {
+        Random random = new Random();
+        ArrayList<Monster> monsters = new ArrayList<>();
+        for (int i = 0; i < 5; i++)
+            monsters.add(new Monster(random.nextInt(width - 2) + 1, random.nextInt(height - 2) + 1));
+        return monsters;
+    }
+
     public void processKey(KeyStroke key) {
         switch (key.getKeyType()) {
             case ArrowUp:
@@ -65,7 +76,7 @@ public class Arena {
         }
     }
 
-    public void draw(TextGraphics screen) {
+    public boolean draw(TextGraphics screen) {
         screen.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         screen.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
         hero.draw(screen);
@@ -74,6 +85,34 @@ public class Arena {
         retrieveCoins(hero.getPosition());
         for (Coin coin : coins)
             coin.draw(screen);
+        boolean res = verifyMonsterCollisions();
+        if (res) {
+            return res;
+        }
+        moveMonsters(monsters);
+        for (Monster monster : monsters)
+            monster.draw(screen);
+        res = verifyMonsterCollisions();
+        return res;
+    }
+
+    private void moveMonsters(List<Monster> monsters) {
+        for (Monster monster : monsters) {
+            Position positionMonsterWants = monster.positionMonsterWantsToMove();
+            if (canHeroMove(positionMonsterWants)) {
+                monster.setPosition(positionMonsterWants);
+            }
+        }
+    }
+
+    public boolean verifyMonsterCollisions() {
+        for (Monster monster : monsters) {
+            if (monster.getPosition().equals(hero.getPosition())) {
+                System.out.println("Hero died.");
+                return true;
+            }
+        }
+        return false;
     }
 
     public void moveHero(Position position) {
@@ -85,7 +124,6 @@ public class Arena {
         for (Coin coin : coins) {
             if (coin.getPosition().equals(position)) {
                 coins.remove(coin);
-                System.out.println("gay");
                 break;
             }
         }
